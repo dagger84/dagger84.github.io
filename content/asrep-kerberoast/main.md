@@ -1,5 +1,12 @@
 # asrep roasting and kerberoasting
 
+## tl;dr
+- Both **AS-REP roasting** and **Kerberoasting** are techniques used to steal NTLM hashes that can be cracked offline.
+- However, the techniques differ in the part of the Kerberos protocol abused.
+- **AS-REP roasting** allows the NTLM hashes of user accounts who _do not use pre-authentication_ (refered to as `USERS_NO_PREAUTH` in this article) to be stolen.
+  - This occurs as a misconfiguration in Kerberos: `Do not require Kerberos pre-authentication`.
+  - The attack is called "AS-REP Roasting" because `AS_REP` is the name of the _response_ (`REP`) sent from the Kerberos Authentication Service (`AS`). From this `AS_REP` response, attackers can steal the NTLM hashes of `USERS_NO_PREAUTH`.
+
 ## kerberos basics
 
 - relies on _symmetric key cryptography_
@@ -38,6 +45,8 @@
   - The **TGS** in the **KDC** does not verify whether or not a user is authorized to access a service (authorization is the service's responsibility); thus, the **TGS** will grant a **service ticket** to any user who requests one. _This means that the NTLM hash for a domain account is (indirectly) leaked by the TGS_.
     - If the **domain user** has a weak password, then we can try common passwords, generate their NTLM hashes, and then see if decryption succeeds. If it does, then we have cracked the **domain user**'s password.
 
+
+## asrep roast
 
 ## references
 
